@@ -33,5 +33,10 @@ namespace PayPalIntegration.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult PayPal()
+        {
+            return View();
+        }
     }
 }

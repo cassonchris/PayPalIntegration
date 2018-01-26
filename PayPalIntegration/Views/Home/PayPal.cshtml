@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "PayPal Test";
+    Layout = "_Layout";
+}
+
+@section Scripts
+{
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script>
+        paypal.Button.render({
+            env: 'sandbox', // Or 'sandbox',
+
+            client: {
+                sandbox: "ASOBvDQ3J6LocY3RPi7bYiG9nIqrTLOVjQ8fsgzszy70QpQNFmAN-IZxamnwh-Bdg62eSegR0F_AsJYi",
+                productions: "AbQeQJ70MaVT2J0MaWVPZSBzyuB92SoJEHgUOSyXKRsHJJo9iqChMIuHBJ57Oz_rnsDGF9q9uDIxTynZ"
+            },
+
+            commit: true, // Show a 'Pay Now' button
+
+            style: {
+                color: "black",
+                shape: "rect",
+                size: "responsive"
+            },
+
+            payment: function(data, actions) {
+                /* 
+                 * Set up the payment here 
+                 */
+                return actions.payment.create({
+                    payment: {
+                        transactions: [
+                            {
+                                amount: { total: ".01", currency: "USD" }
+                            }
+                        ]
+                    }
+                });
+            },
+
+            onAuthorize: function(data, actions) {
+                /* 
+                 * Execute the payment here 
+                 */
+                return actions.payment.execute().then(function(payment) {
+                    alert("payment finalized");
+                });
+            },
+
+            onCancel: function(data, actions) {
+                /* 
+                 * Buyer cancelled the payment 
+                 */
+                alert("payment canceled");
+            },
+
+            onError: function(err) {
+                /* 
+                 * An error occurred during the transaction 
+                 */
+                alert("error " + err);
+            }
+        }, '#paypal-button');
+    </script>
+}
+
+<div id="paypal-button"></div>
